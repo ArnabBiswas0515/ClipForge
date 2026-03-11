@@ -1,22 +1,30 @@
 import os
+import time
+from text_to_audio import text_to_speech_file
 
 def text_to_audio(folder):
     print("TTA - ", folder)
+    with open(f"user_uploads/{folder}/desc.txt") as f:
+        text = f.read()
+    print(text, folder)
 
 def create_vid(folder):
     print("CV - ", folder)
 
 if __name__ == '__main__':
-    with open("done.txt", "r") as f:
-        done_folders = f.readlines()
+    while True:
+        print('Processing Queue')
+        with open("done.txt", "r") as f:
+            done_folders = f.readlines()
 
-    done_folders = [f.strip() for f in done_folders]
-    folders = os.listdir("user_uploads")
+        done_folders = [f.strip() for f in done_folders]
+        folders = os.listdir("user_uploads")
 
-    for folder in folders:
-        if folder not in done_folders:
-            text_to_audio(folder)
-            create_vid(folder)
-            with open("done.txt", "a") as f:
-                f.write(folder + "\n")
-                f.close()
+        for folder in folders:
+            if folder not in done_folders:
+                text_to_audio(folder)
+                create_vid(folder)
+                with open("done.txt", "a") as f:
+                    f.write(folder + "\n")
+                    f.close()
+        time.sleep(5)
